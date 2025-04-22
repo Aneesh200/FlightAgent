@@ -1,0 +1,200 @@
+[
+  
+    {
+      "id": "parser_basic_complete",
+      "type": "parser",
+      "user_input": "I need a flight from London Heathrow to New York JFK on September 15th, 2024 for 2 people.",
+      "expected_intent": "request_flights",
+      "expected_entities": {
+        "origin": "LHR",
+        "destination": "JFK",
+        "departure_date": "2024-09-15",
+        "passengers": 2
+      }
+    },
+    {
+      "id": "parser_relative_date",
+      "type": "parser",
+      "user_input": "Fly from Paris CDG to San Francisco tomorrow, just me.",
+      "expected_intent": "request_flights",
+      "expected_entities": {
+        "origin": "CDG",
+        "destination": "SFO",
+        "departure_date": "2025-04-22(Tomorrow)",  
+        "passengers": 1
+      }
+    },
+    {
+      "id": "parser_with_prefs",
+      "type": "parser",
+      "user_input": "Looking for business class tickets from Tokyo NRT to LAX next Friday for 3 adults. Prefer non-stop.",
+      "expected_intent": "request_flights",
+      "expected_entities": {
+        "origin": "NRT",
+        "destination": "LAX",
+        "departure_date": "Next Friday", 
+        "passengers": 3,
+        "class_preference": "business",
+        "non_stop_preference": true
+      }
+    },
+    {
+      "id": "parser_missing_date",
+      "type": "parser",
+      "user_input": "I want to go from Berlin to Rome for 4 people.",
+      "expected_intent": "request_flights",
+      "expected_entities": {
+        "origin": "BER", 
+        "destination": "FCO", 
+        "passengers": 4
+      }
+    },
+    {
+      "id": "parser_missing_destination",
+      "type": "parser",
+      "user_input": "Flights for 1 person leaving August 10th 2024 from Dublin.",
+      "expected_intent": "request_flights",
+      "expected_entities": {
+        "origin": "DUB",
+        "departure_date": "2024-08-10",
+        "passengers": 1
+      }
+    },
+    {
+      "id": "parser_ambiguous_ish_location",
+      "type": "parser",
+      "user_input": "Fly me from London to Dubai on Christmas day.",
+      "expected_intent": "request_flights",
+      "expected_entities": {
+        "origin": "London", 
+        "destination": "DXB", 
+        "departure_date": "2025-12-25", 
+        "passengers": 1 
+      }
+    },
+    {
+      "id": "parser_detailed_passengers",
+      "type": "parser",
+      "user_input": "Need tickets from Sydney to Singapore on Oct 1st for 2 adults and 1 child.",
+      "expected_intent": "request_flights",
+      "expected_entities": {
+        "origin": "SYD",
+        "destination": "SIN",
+        "departure_date": "2024-10-01",
+        "passengers": 3
+      }
+    },
+    {
+      "id": "parser_change_mind_simple", 
+      "type": "parser",
+      "user_input": "From AMS to IST, Sept 20. No wait, make it Sept 22nd.",
+      "expected_intent": "request_flights", 
+      "expected_entities": {
+        "origin": "AMS",
+        "destination": "IST",
+        "departure_date": "2024-09-22"
+      }
+    },
+  
+  
+    {
+      "id": "rag_specific_price",
+      "type": "rag_llm_judge",
+      "context_flights": [
+        { "id": "AA101", "airline": "American", "departure_time": "09:00", "arrival_time": "12:00", "price": 450, "currency": "USD", "stops": 0, "origin": "JFK", "destination": "LAX", "duration": "5h 0m" },
+        { "id": "UA202", "airline": "United", "departure_time": "10:00", "arrival_time": "13:15", "price": 420, "currency": "USD", "stops": 0, "origin": "JFK", "destination": "LAX", "duration": "5h 15m" }
+      ],
+      "user_question": "What is the price of flight AA101?",
+      "expected_keywords": ["AA101", "450", "USD"]
+    },
+    {
+      "id": "rag_cheapest",
+      "type": "rag_llm_judge",
+      "context_flights": [
+        { "id": "AA101", "airline": "American", "departure_time": "09:00", "arrival_time": "12:00", "price": 450, "currency": "USD", "stops": 0, "origin": "JFK", "destination": "LAX", "duration": "5h 0m" },
+        { "id": "UA202", "airline": "United", "departure_time": "10:00", "arrival_time": "13:15", "price": 420, "currency": "USD", "stops": 0, "origin": "JFK", "destination": "LAX", "duration": "5h 15m" },
+        { "id": "DL303", "airline": "Delta", "departure_time": "11:00", "arrival_time": "15:00", "price": 480, "currency": "USD", "stops": 1, "origin": "JFK", "destination": "LAX", "duration": "6h 0m" }
+      ],
+      "user_question": "Which flight is the cheapest?",
+      "expected_keywords": ["UA202", "United", "420", "USD", "cheapest"]
+    },
+    {
+      "id": "rag_fastest",
+      "type": "rag_llm_judge",
+      "context_flights": [
+        { "id": "AA101", "airline": "American", "departure_time": "09:00", "arrival_time": "12:00", "price": 450, "currency": "USD", "stops": 0, "origin": "JFK", "destination": "LAX", "duration": "5h 0m" },
+        { "id": "UA202", "airline": "United", "departure_time": "10:00", "arrival_time": "13:15", "price": 420, "currency": "USD", "stops": 0, "origin": "JFK", "destination": "LAX", "duration": "5h 15m" },
+        { "id": "DL303", "airline": "Delta", "departure_time": "11:00", "arrival_time": "15:00", "price": 480, "currency": "USD", "stops": 1, "origin": "JFK", "destination": "LAX", "duration": "6h 0m" }
+      ],
+      "user_question": "What's the fastest option?",
+      "expected_keywords": ["AA101", "American", "5h 0m", "fastest"]
+    },
+    {
+      "id": "rag_non_stop",
+      "type": "rag_llm_judge",
+      "context_flights": [
+        { "id": "AA101", "airline": "American", "departure_time": "09:00", "arrival_time": "12:00", "price": 450, "currency": "USD", "stops": 0, "origin": "JFK", "destination": "LAX", "duration": "5h 0m" },
+        { "id": "UA202", "airline": "United", "departure_time": "10:00", "arrival_time": "13:15", "price": 420, "currency": "USD", "stops": 0, "origin": "JFK", "destination": "LAX", "duration": "5h 15m" },
+        { "id": "DL303", "airline": "Delta", "departure_time": "11:00", "arrival_time": "15:00", "price": 480, "currency": "USD", "stops": 1, "origin": "JFK", "destination": "LAX", "duration": "6h 0m" }
+      ],
+      "user_question": "Are there any non-stop flights? List them.",
+      "expected_keywords": ["non-stop", "AA101", "UA202"]
+    },
+    {
+      "id": "rag_filter_airline",
+      "type": "rag_llm_judge",
+      "context_flights": [
+        { "id": "AA101", "airline": "American", "departure_time": "09:00", "arrival_time": "12:00", "price": 450, "currency": "USD", "stops": 0, "origin": "JFK", "destination": "LAX", "duration": "5h 0m" },
+        { "id": "UA202", "airline": "United", "departure_time": "10:00", "arrival_time": "13:15", "price": 420, "currency": "USD", "stops": 0, "origin": "JFK", "destination": "LAX", "duration": "5h 15m" },
+        { "id": "AA404", "airline": "American", "departure_time": "14:00", "arrival_time": "17:30", "price": 460, "currency": "USD", "stops": 0, "origin": "JFK", "destination": "LAX", "duration": "5h 30m" }
+      ],
+      "user_question": "Show me the flights operated by American.",
+      "expected_keywords": ["American", "AA101", "AA404"] 
+    },
+      {
+      "id": "rag_judge_test_2_faithfulness_retry", 
+      "type": "rag_llm_judge",
+      "context_flights": [
+         { "id": "FL456", "airline": "Airline B", "departure_time": "11:00", "arrival_time": "15:00", "price": 250, "currency": "USD", "stops": 1, "origin": "LHR", "destination": "JFK", "duration": "4h 0m" }
+      ],
+      "user_question": "What is the price and duration of flight FL456?",
+      "expected_keywords": ["250", "USD", "4h 0m", "FL456"]
+     },
+    {
+      "id": "rag_missing_baggage_info",
+      "type": "rag_llm_judge",
+      "context_flights": [
+        { "id": "EK500", "airline": "Emirates", "departure_time": "22:00", "arrival_time": "06:00+1", "price": 800, "currency": "USD", "stops": 0, "origin": "DXB", "destination": "LHR", "duration": "8h 0m" }
+      ],
+      "user_question": "How many checked bags are included with EK500?",
+      "expected_keywords": ["don't have", "no information", "baggage", "check with airline"] 
+    },
+    {
+      "id": "rag_irrelevant_weather",
+      "type": "rag_llm_judge",
+      "context_flights": [
+        { "id": "BA001", "airline": "British Airways", "departure_time": "10:00", "arrival_time": "12:30", "price": 150, "currency": "GBP", "stops": 0, "origin": "LHR", "destination": "CDG", "duration": "1h 30m" }
+      ],
+      "user_question": "What's the weather like in Paris today?",
+      "expected_keywords": ["cannot provide", "weather", "flight information only"] 
+    },
+    {
+      "id": "rag_summary_request",
+      "type": "rag_llm_judge",
+      "context_flights": [
+        { "id": "AA101", "airline": "American", "departure_time": "09:00", "arrival_time": "12:00", "price": 450, "currency": "USD", "stops": 0, "origin": "JFK", "destination": "LAX", "duration": "5h 0m" },
+        { "id": "UA202", "airline": "United", "departure_time": "10:00", "arrival_time": "13:15", "price": 420, "currency": "USD", "stops": 0, "origin": "JFK", "destination": "LAX", "duration": "5h 15m" },
+        { "id": "DL303", "airline": "Delta", "departure_time": "11:00", "arrival_time": "15:00", "price": 480, "currency": "USD", "stops": 1, "origin": "JFK", "destination": "LAX", "duration": "6h 0m" }
+      ],
+      "user_question": "Can you summarize the options you found?",
+      "expected_keywords": ["American", "United", "Delta", "non-stop", "one stop", "420", "480"]
+    },
+    {
+      "id": "rag_no_flights_context",
+      "type": "rag_llm_judge",
+      "context_flights": [
+      ],
+      "user_question": "Are there any flights available?",
+      "expected_keywords": ["no flights", "could not find", "available"] 
+    }
+  ]

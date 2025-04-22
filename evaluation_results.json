@@ -1,0 +1,640 @@
+{
+  "parser": [
+    {
+      "id": "parser_basic_complete",
+      "duration": 0.7258291244506836,
+      "pass": false,
+      "intent_correct": false,
+      "slot_accuracy": 0.5,
+      "actual_intent": "PROVIDING_DETAILS",
+      "actual_entities": {
+        "departure_city": "London Heathrow",
+        "arrival_city": "New York JFK",
+        "departure_date": "2024-09-15",
+        "passengers": 2,
+        "selected_flight_identifier": null,
+        "suggestion_keywords": null
+      }
+    },
+    {
+      "id": "parser_relative_date",
+      "duration": 0.9190330505371094,
+      "pass": false,
+      "intent_correct": false,
+      "slot_accuracy": 0.25,
+      "actual_intent": "PROVIDING_DETAILS",
+      "actual_entities": {
+        "departure_city": "Paris",
+        "arrival_city": "San Francisco",
+        "departure_date": "2025-04-22",
+        "passengers": 1,
+        "selected_flight_identifier": null,
+        "suggestion_keywords": null
+      }
+    },
+    {
+      "id": "parser_with_prefs",
+      "duration": 0.6259651184082031,
+      "pass": false,
+      "intent_correct": false,
+      "slot_accuracy": 0.3333333333333333,
+      "actual_intent": "PROVIDING_DETAILS",
+      "actual_entities": {
+        "departure_city": "Tokyo",
+        "arrival_city": "LAX",
+        "departure_date": "2025-04-26",
+        "passengers": 3,
+        "class_preference": "business",
+        "preferred_airline": null,
+        "meal_preference": null,
+        "return_date": null,
+        "selected_flight_identifier": null,
+        "suggestion_keywords": null
+      }
+    },
+    {
+      "id": "parser_missing_date",
+      "duration": 0.8596067428588867,
+      "pass": false,
+      "intent_correct": false,
+      "slot_accuracy": 0.3333333333333333,
+      "actual_intent": "PROVIDING_DETAILS",
+      "actual_entities": {
+        "departure_city": "Berlin",
+        "arrival_city": "Rome",
+        "passengers": 4,
+        "selected_flight_identifier": null,
+        "suggestion_keywords": null
+      }
+    },
+    {
+      "id": "parser_missing_destination",
+      "duration": 0.39450597763061523,
+      "pass": false,
+      "intent_correct": false,
+      "slot_accuracy": 0.6666666666666666,
+      "actual_intent": "PROVIDING_DETAILS",
+      "actual_entities": {
+        "departure_city": "Dublin",
+        "departure_date": "2024-08-10",
+        "passengers": 1,
+        "selected_flight_identifier": null,
+        "suggestion_keywords": null
+      }
+    },
+    {
+      "id": "parser_ambiguous_ish_location",
+      "duration": 0.8085510730743408,
+      "pass": false,
+      "intent_correct": false,
+      "slot_accuracy": 0.25,
+      "actual_intent": "PROVIDING_DETAILS",
+      "actual_entities": {
+        "departure_city": "London",
+        "arrival_city": "Dubai",
+        "departure_date": "2025-12-25",
+        "selected_flight_identifier": null,
+        "suggestion_keywords": null
+      }
+    },
+    {
+      "id": "parser_detailed_passengers",
+      "duration": 0.9935460090637207,
+      "pass": false,
+      "intent_correct": false,
+      "slot_accuracy": 0.25,
+      "actual_intent": "PROVIDING_DETAILS",
+      "actual_entities": {
+        "departure_city": "Sydney",
+        "arrival_city": "Singapore",
+        "departure_date": "2025-10-01",
+        "passengers": 3,
+        "selected_flight_identifier": null,
+        "suggestion_keywords": null
+      }
+    },
+    {
+      "id": "parser_change_mind_simple",
+      "duration": 0.760951042175293,
+      "pass": false,
+      "intent_correct": false,
+      "slot_accuracy": 0.0,
+      "actual_intent": "PROVIDING_DETAILS",
+      "actual_entities": {
+        "departure_city": "AMS",
+        "arrival_city": "IST",
+        "departure_date": "2025-09-22",
+        "selected_flight_identifier": null,
+        "suggestion_keywords": null
+      }
+    }
+  ],
+  "rag": [
+    {
+      "id": "rag_specific_price",
+      "question": "What is the price of flight AA101?",
+      "context_flights": [
+        {
+          "id": "AA101",
+          "airline": "American",
+          "departure_time": "09:00",
+          "arrival_time": "12:00",
+          "price": 450,
+          "currency": "USD",
+          "stops": 0,
+          "origin": "JFK",
+          "destination": "LAX",
+          "duration": "5h 0m"
+        },
+        {
+          "id": "UA202",
+          "airline": "United",
+          "departure_time": "10:00",
+          "arrival_time": "13:15",
+          "price": 420,
+          "currency": "USD",
+          "stops": 0,
+          "origin": "JFK",
+          "destination": "LAX",
+          "duration": "5h 15m"
+        }
+      ],
+      "actual_answer": "Based on the provided flight snippets, there is no information about a specific flight \"AA101\". The snippets only provide information about two flights, one with United and one with American, but neither of them has a flight number \"AA101\".",
+      "rag_duration": 0.7384510040283203,
+      "faithfulness_score": 1,
+      "faithfulness_reasoning": "The Assistant's Answer is completely unfaithful because it claims there is no information about flight \"AA101\", which is contradicted by the context. The context explicitly provides information about a flight with the id \"AA101\", including its price, which is 450 USD.",
+      "judge_faith_duration": 0.34210801124572754,
+      "relevance_score": 5,
+      "relevance_reasoning": "The Assistant's Answer directly addresses the User Question by stating that the provided information does not contain the specific flight \"AA101\", which is the exact question being asked. The answer attempts to answer the question and explains why it cannot provide the price, making it directly relevant.",
+      "judge_rel_duration": 0.43094706535339355,
+      "keywords_match_details": {
+        "match": false,
+        "missing": [
+          "450",
+          "USD"
+        ],
+        "present": [
+          "AA101"
+        ]
+      },
+      "total_duration": 1.8071277141571045,
+      "pass": false
+    },
+    {
+      "id": "rag_cheapest",
+      "question": "Which flight is the cheapest?",
+      "context_flights": [
+        {
+          "id": "AA101",
+          "airline": "American",
+          "departure_time": "09:00",
+          "arrival_time": "12:00",
+          "price": 450,
+          "currency": "USD",
+          "stops": 0,
+          "origin": "JFK",
+          "destination": "LAX",
+          "duration": "5h 0m"
+        },
+        {
+          "id": "UA202",
+          "airline": "United",
+          "departure_time": "10:00",
+          "arrival_time": "13:15",
+          "price": 420,
+          "currency": "USD",
+          "stops": 0,
+          "origin": "JFK",
+          "destination": "LAX",
+          "duration": "5h 15m"
+        },
+        {
+          "id": "DL303",
+          "airline": "Delta",
+          "departure_time": "11:00",
+          "arrival_time": "15:00",
+          "price": 480,
+          "currency": "USD",
+          "stops": 1,
+          "origin": "JFK",
+          "destination": "LAX",
+          "duration": "6h 0m"
+        }
+      ],
+      "actual_answer": "**Option 2: United** is the cheapest, priced at ~$420 USD.",
+      "rag_duration": 0.31829118728637695,
+      "faithfulness_score": 5,
+      "faithfulness_reasoning": "The Assistant's Answer is fully faithful to the context. The answer correctly identifies the cheapest flight as United (UA202) with a price of $420 USD, which is directly supported by the provided flight information in the context.",
+      "judge_faith_duration": 0.3006007671356201,
+      "relevance_score": 5,
+      "relevance_reasoning": "The Assistant's Answer directly addresses the User Question by providing the cheapest flight option, which is the specific information requested by the user.",
+      "judge_rel_duration": 0.3000068664550781,
+      "keywords_match_details": {
+        "match": false,
+        "missing": [
+          "UA202"
+        ],
+        "present": [
+          "United",
+          "420",
+          "USD",
+          "cheapest"
+        ]
+      },
+      "total_duration": 1.0583019256591797,
+      "pass": true
+    },
+    {
+      "id": "rag_fastest",
+      "question": "What's the fastest option?",
+      "context_flights": [
+        {
+          "id": "AA101",
+          "airline": "American",
+          "departure_time": "09:00",
+          "arrival_time": "12:00",
+          "price": 450,
+          "currency": "USD",
+          "stops": 0,
+          "origin": "JFK",
+          "destination": "LAX",
+          "duration": "5h 0m"
+        },
+        {
+          "id": "UA202",
+          "airline": "United",
+          "departure_time": "10:00",
+          "arrival_time": "13:15",
+          "price": 420,
+          "currency": "USD",
+          "stops": 0,
+          "origin": "JFK",
+          "destination": "LAX",
+          "duration": "5h 15m"
+        },
+        {
+          "id": "DL303",
+          "airline": "Delta",
+          "departure_time": "11:00",
+          "arrival_time": "15:00",
+          "price": 480,
+          "currency": "USD",
+          "stops": 1,
+          "origin": "JFK",
+          "destination": "LAX",
+          "duration": "6h 0m"
+        }
+      ],
+      "actual_answer": "The fastest option is **Option 2**, with a duration of 5h 0m.",
+      "rag_duration": 0.22857403755187988,
+      "faithfulness_score": 2,
+      "faithfulness_reasoning": "The Assistant's Answer states that the fastest option is **Option 2**, but the context does not provide any option numbers. The context only provides flight information with IDs (AA101, UA202, DL303). The Assistant's Answer is trying to map the flight information to option numbers, which is not present in the context. However, the Assistant's Answer is correct in stating that the flight with a duration of 5h 0m is the fastest option, which is indeed the flight with ID AA101.",
+      "judge_faith_duration": 0.6560268402099609,
+      "relevance_score": 5,
+      "relevance_reasoning": "The Assistant's Answer directly addresses the User Question by providing the fastest option, which is exactly what the user asked for. The answer is concise and provides specific information, making it highly relevant to the question.",
+      "judge_rel_duration": 0.30533504486083984,
+      "keywords_match_details": {
+        "match": false,
+        "missing": [
+          "AA101",
+          "American"
+        ],
+        "present": [
+          "5h 0m",
+          "fastest"
+        ]
+      },
+      "total_duration": 1.2415571212768555,
+      "pass": false
+    },
+    {
+      "id": "rag_non_stop",
+      "question": "Are there any non-stop flights? List them.",
+      "context_flights": [
+        {
+          "id": "AA101",
+          "airline": "American",
+          "departure_time": "09:00",
+          "arrival_time": "12:00",
+          "price": 450,
+          "currency": "USD",
+          "stops": 0,
+          "origin": "JFK",
+          "destination": "LAX",
+          "duration": "5h 0m"
+        },
+        {
+          "id": "UA202",
+          "airline": "United",
+          "departure_time": "10:00",
+          "arrival_time": "13:15",
+          "price": 420,
+          "currency": "USD",
+          "stops": 0,
+          "origin": "JFK",
+          "destination": "LAX",
+          "duration": "5h 15m"
+        },
+        {
+          "id": "DL303",
+          "airline": "Delta",
+          "departure_time": "11:00",
+          "arrival_time": "15:00",
+          "price": 480,
+          "currency": "USD",
+          "stops": 1,
+          "origin": "JFK",
+          "destination": "LAX",
+          "duration": "6h 0m"
+        }
+      ],
+      "actual_answer": "Yes, there are non-stop flights. Here are the options:\n\n**Option 1:** American (N/A) JFK->LAX. Price ~$450 USD. Dur: 5h 0m, Stops: 0 stop(s).\n**Option 2:** United (N/A) JFK->LAX. Price ~$420 USD. Dur: 5h 15m, Stops: 0 stop(s).",
+      "rag_duration": 0.9497940540313721,
+      "faithfulness_score": 5,
+      "faithfulness_reasoning": "The Assistant's Answer is fully faithful to the context. It correctly identifies the non-stop flights (AA101 and UA202) and provides accurate information about their prices, durations, and number of stops, all of which are present in the context. The answer does not include any information not present in the context, nor does it contradict any information in the context.",
+      "judge_faith_duration": 0.36664724349975586,
+      "relevance_score": 5,
+      "relevance_reasoning": "The Assistant's Answer directly addresses the User Question by providing a list of non-stop flights, including details such as airline, route, price, and duration, which is exactly what the user asked for.",
+      "judge_rel_duration": 0.3038361072540283,
+      "keywords_match_details": {
+        "match": false,
+        "missing": [
+          "AA101",
+          "UA202"
+        ],
+        "present": [
+          "non-stop"
+        ]
+      },
+      "total_duration": 1.6673510074615479,
+      "pass": true
+    },
+    {
+      "id": "rag_filter_airline",
+      "question": "Show me the flights operated by American.",
+      "context_flights": [
+        {
+          "id": "AA101",
+          "airline": "American",
+          "departure_time": "09:00",
+          "arrival_time": "12:00",
+          "price": 450,
+          "currency": "USD",
+          "stops": 0,
+          "origin": "JFK",
+          "destination": "LAX",
+          "duration": "5h 0m"
+        },
+        {
+          "id": "UA202",
+          "airline": "United",
+          "departure_time": "10:00",
+          "arrival_time": "13:15",
+          "price": 420,
+          "currency": "USD",
+          "stops": 0,
+          "origin": "JFK",
+          "destination": "LAX",
+          "duration": "5h 15m"
+        },
+        {
+          "id": "AA404",
+          "airline": "American",
+          "departure_time": "14:00",
+          "arrival_time": "17:30",
+          "price": 460,
+          "currency": "USD",
+          "stops": 0,
+          "origin": "JFK",
+          "destination": "LAX",
+          "duration": "5h 30m"
+        }
+      ],
+      "actual_answer": "Here are the flights operated by American:\n\n**Option 2:** American (N/A) JFK->LAX. Price ~$460 USD. Dur: 5h 30m, Stops: 0 stop(s).\n**Option 3:** American (N/A) JFK->LAX. Price ~$450 USD. Dur: 5h 0m, Stops: 0 stop(s).",
+      "rag_duration": 0.5686988830566406,
+      "faithfulness_score": 4,
+      "faithfulness_reasoning": "The Assistant's Answer is mostly faithful to the context, as it correctly identifies the flights operated by American Airlines (AA101 and AA404) and provides the correct information about their prices, durations, and number of stops. However, the answer is not fully faithful because it does not include the flight numbers (AA101 and AA404) and the exact departure and arrival times, which are present in the context. Additionally, the answer presents the information in a slightly different format than the original context, but this does not affect the faithfulness score.",
+      "judge_faith_duration": 0.5927612781524658,
+      "relevance_score": 5,
+      "relevance_reasoning": "The Assistant's Answer directly addresses the User Question by providing specific flight options operated by American, including details such as route, price, duration, and number of stops. The answer is directly relevant to the user's request to show flights operated by American.",
+      "judge_rel_duration": 0.2856409549713135,
+      "keywords_match_details": {
+        "match": false,
+        "missing": [
+          "AA101",
+          "AA404"
+        ],
+        "present": [
+          "American"
+        ]
+      },
+      "total_duration": 1.4922778606414795,
+      "pass": true
+    },
+    {
+      "id": "rag_judge_test_2_faithfulness_retry",
+      "question": "What is the price and duration of flight FL456?",
+      "context_flights": [
+        {
+          "id": "FL456",
+          "airline": "Airline B",
+          "departure_time": "11:00",
+          "arrival_time": "15:00",
+          "price": 250,
+          "currency": "USD",
+          "stops": 1,
+          "origin": "LHR",
+          "destination": "JFK",
+          "duration": "4h 0m"
+        }
+      ],
+      "actual_answer": "Based on the provided flight snippet, there is no information about a flight with the number FL456. The snippet only mentions a flight from LHR to JFK with Airline B, but it doesn't provide a flight number.",
+      "rag_duration": 0.39368700981140137,
+      "faithfulness_score": 1,
+      "faithfulness_reasoning": "The Assistant's Answer claims that the snippet does not provide a flight number, which is incorrect. The context explicitly states \"id\": \"FL456\", which is the flight number. The answer hallucinates by saying there is no information about a flight with the number FL456.",
+      "judge_faith_duration": 0.4784729480743408,
+      "relevance_score": 5,
+      "relevance_reasoning": "The Assistant's Answer directly addresses the User Question by stating that there is no information about a flight with the number FL456, implying that it cannot provide the price and duration of the flight. The answer is relevant because it attempts to answer the specific question asked, even if it's a negative response.",
+      "judge_rel_duration": 0.31835103034973145,
+      "keywords_match_details": {
+        "match": false,
+        "missing": [
+          "250",
+          "USD",
+          "4h 0m"
+        ],
+        "present": [
+          "FL456"
+        ]
+      },
+      "total_duration": 1.2821550369262695,
+      "pass": false
+    },
+    {
+      "id": "rag_missing_baggage_info",
+      "question": "How many checked bags are included with EK500?",
+      "context_flights": [
+        {
+          "id": "EK500",
+          "airline": "Emirates",
+          "departure_time": "22:00",
+          "arrival_time": "06:00+1",
+          "price": 800,
+          "currency": "USD",
+          "stops": 0,
+          "origin": "DXB",
+          "destination": "LHR",
+          "duration": "8h 0m"
+        }
+      ],
+      "actual_answer": "Based on the provided flight snippet, I don't see information about checked bags or flight number EK500.",
+      "rag_duration": 0.26003122329711914,
+      "faithfulness_score": 5,
+      "faithfulness_reasoning": "The Assistant's Answer is fully faithful because it accurately states that the provided flight snippet does not contain information about checked bags or any specific details about flight number EK500. The context only provides basic flight information such as departure and arrival times, price, and duration, but does not mention checked bags. The Assistant's Answer does not hallucinate or contradict any information in the context.",
+      "judge_faith_duration": 0.5741941928863525,
+      "relevance_score": 5,
+      "relevance_reasoning": "The Assistant's Answer directly addresses the User Question by stating that the provided information does not include details about checked bags or flight number EK500, implying that it cannot provide an answer based on the given data. This response is relevant as it acknowledges the question and explains why it cannot be answered.",
+      "judge_rel_duration": 0.34487223625183105,
+      "keywords_match_details": {
+        "match": false,
+        "missing": [
+          "don't have",
+          "no information",
+          "baggage",
+          "check with airline"
+        ],
+        "present": []
+      },
+      "total_duration": 1.2648749351501465,
+      "pass": true
+    },
+    {
+      "id": "rag_irrelevant_weather",
+      "question": "What's the weather like in Paris today?",
+      "context_flights": [
+        {
+          "id": "BA001",
+          "airline": "British Airways",
+          "departure_time": "10:00",
+          "arrival_time": "12:30",
+          "price": 150,
+          "currency": "GBP",
+          "stops": 0,
+          "origin": "LHR",
+          "destination": "CDG",
+          "duration": "1h 30m"
+        }
+      ],
+      "actual_answer": "Based on the provided flight snippet, I don't see any information about the weather in Paris.",
+      "rag_duration": 0.2540261745452881,
+      "faithfulness_score": 5,
+      "faithfulness_reasoning": "The Assistant's Answer is fully faithful because it accurately states that the provided flight information does not contain any information about the weather in Paris. The context only provides details about the flight, such as departure and arrival times, price, and destination, but does not mention the weather. The Assistant's Answer does not hallucinate or contradict any information in the context, making it a faithful response.",
+      "judge_faith_duration": 0.4369230270385742,
+      "relevance_score": 5,
+      "relevance_reasoning": "The Assistant's Answer directly addresses the User Question by stating that it cannot provide the weather information in Paris based on the provided data, which implies that the question is outside the scope of the available information.",
+      "judge_rel_duration": 0.30101609230041504,
+      "keywords_match_details": {
+        "match": false,
+        "missing": [
+          "cannot provide",
+          "flight information only"
+        ],
+        "present": [
+          "weather"
+        ]
+      },
+      "total_duration": 1.0790197849273682,
+      "pass": true
+    },
+    {
+      "id": "rag_summary_request",
+      "question": "Can you summarize the options you found?",
+      "context_flights": [
+        {
+          "id": "AA101",
+          "airline": "American",
+          "departure_time": "09:00",
+          "arrival_time": "12:00",
+          "price": 450,
+          "currency": "USD",
+          "stops": 0,
+          "origin": "JFK",
+          "destination": "LAX",
+          "duration": "5h 0m"
+        },
+        {
+          "id": "UA202",
+          "airline": "United",
+          "departure_time": "10:00",
+          "arrival_time": "13:15",
+          "price": 420,
+          "currency": "USD",
+          "stops": 0,
+          "origin": "JFK",
+          "destination": "LAX",
+          "duration": "5h 15m"
+        },
+        {
+          "id": "DL303",
+          "airline": "Delta",
+          "departure_time": "11:00",
+          "arrival_time": "15:00",
+          "price": 480,
+          "currency": "USD",
+          "stops": 1,
+          "origin": "JFK",
+          "destination": "LAX",
+          "duration": "6h 0m"
+        }
+      ],
+      "actual_answer": "Here is a summary of the flight options:\n\n**Option 1:** Delta, $480, 6h 0m, 1 stop\n**Option 2:** United, $420, 5h 15m, non-stop\n**Option 3:** American, $450, 5h 0m, non-stop",
+      "rag_duration": 0.44556474685668945,
+      "faithfulness_score": 5,
+      "faithfulness_reasoning": "The Assistant's Answer is fully faithful to the provided context. It accurately summarizes the flight options, extracting the relevant information from the context, including the airline, price, duration, and number of stops for each option. The answer does not include any information not present in the context, nor does it contradict any information in the context.",
+      "judge_faith_duration": 0.3655219078063965,
+      "relevance_score": 5,
+      "relevance_reasoning": "The Assistant's Answer directly addresses the User Question by providing a summary of the options found, which is exactly what the user asked for. The answer is structured and clear, listing the different options with their corresponding details.",
+      "judge_rel_duration": 0.3357257843017578,
+      "keywords_match_details": {
+        "match": false,
+        "missing": [
+          "one stop"
+        ],
+        "present": [
+          "American",
+          "United",
+          "Delta",
+          "non-stop",
+          "420",
+          "480"
+        ]
+      },
+      "total_duration": 1.1954131126403809,
+      "pass": true
+    },
+    {
+      "id": "rag_no_flights_context",
+      "question": "Are there any flights available?",
+      "context_flights": [],
+      "actual_answer": "No flight details loaded yet to answer questions.",
+      "rag_duration": 5.316734313964844e-05,
+      "faithfulness_score": 5,
+      "faithfulness_reasoning": "The Assistant's Answer is fully faithful because it accurately reflects the lack of flight data in the provided context. The answer does not include any information not present in the context, nor does it contradict any information in the context. The answer is a direct consequence of the absence of flight data, making it a faithful response.",
+      "judge_faith_duration": 0.42226099967956543,
+      "relevance_score": 5,
+      "relevance_reasoning": "The Assistant's Answer directly addresses the User Question by stating that it cannot provide information about available flights due to a lack of loaded flight details, which is a relevant explanation for why it cannot answer the question.",
+      "judge_rel_duration": 0.29175305366516113,
+      "keywords_match_details": {
+        "match": false,
+        "missing": [
+          "no flights",
+          "could not find",
+          "available"
+        ],
+        "present": []
+      },
+      "total_duration": 0.7148652076721191,
+      "pass": true
+    }
+  ]
+}
